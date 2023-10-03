@@ -72,3 +72,142 @@ def add_neighbor_mass_2d(solid, neighbor_mass_index=None):
 
     return neighbor_mass
 
+
+def add_small_to_big_matrix_2d_periodically(
+    big_matrix, small_matrix, add_x, add_y, added_flag=True
+):
+    """This function adds a small matrix to a big matrix periodically.
+    The small matrix is added to the big matrix at the position (add_x, add_y).
+    The added_flag is used to determine whether the small matrix is added to \
+    the big matrix. If the added_flag is True, the small matrix is added to \
+    the big matrix.
+    """
+    rows_small, cols_small = small_matrix.shape
+    rows_big, cols_big = big_matrix.shape
+
+    if rows_small > rows_big or cols_small > cols_big:
+        raise ValueError("The small matrix is exactly bigger")
+
+    length = cols_small // 2
+    height = rows_small // 2
+    x_added_indices = []
+    y_added_indices = []
+
+    start_x = add_x - length
+    end_x = start_x + cols_small - 1
+    x_range = list(range(start_x, end_x + 1))
+    start_y = add_y - height
+    end_y = start_y + rows_small - 1
+    y_range = list(range(start_y, end_y + 1))
+
+    overflow_left = add_x - length < 0
+    overflow_right = add_x + length > cols_big - 1
+    overflow_top = add_y - height < 0
+    overflow_bottom = add_y + height > rows_big - 1
+    overflow_x = overflow_left or overflow_right
+    overflow_y = overflow_top or overflow_bottom
+
+    if not (overflow_x or overflow_y):
+        if added_flag:
+            big_matrix[np.ix_(y_range, x_range)] += small_matrix
+        x_added_indices.extend(x_range)
+        y_added_indices.extend(y_range)
+        return big_matrix, x_added_indices, y_added_indices
+
+    # If it is out of boundary, separate the range to stepwise
+    x_stepwise = []
+    y_stepwise = []
+
+    if overflow_left:
+        x_right = list(range(0, end_x + 1))
+        x_right_length = len(x_right)
+        x_left_length = cols_small - x_right_length
+        x_left_start = start_x + cols_big
+        x_left_end = x_left_start + x_left_length - 1
+        x_left = list(range(x_left_start, x_left_end + 1))
+        x_left_small = list(range(0, x_left_length))
+        x_right_small = list(range(x_left_length, cols_small))
+        x_stepwise = [x_left, x_left_small, x_right, x_right_small]
+
+    if overflow_right:
+        x_left = list(range(start_x, cols_big))
+        x_left_length = len(x_left)
+        x_right_length = cols_small - x_left_length
+        x_right_start = 0
+        x_right_end = x_right_start + x_right_length
+        x_right = list(range(x_right_start, x_right_end))
+        x_left_small = list(range(0, x_left_length))
+        x_right_small = list(range(x_left_length, cols_small))
+        x_stepwise = [x_left, x_left_small, x_right, x_right_small]
+
+    if overflow_top:
+        y_bottom = list(range(0, end_y + 1))
+        y_bottom_length = len(y_bottom)
+        y_top_length = rows_small - y_bottom_length
+        y_top_start = start_y + rows_big
+        y_top_end = y_top_start + y_top_length
+        y_top = list(range(y_top_start, y_top_end))
+        y_top_small = list(range(0, y_top_length))
+        y_bottom_small = list(range(y_top_length, rows_small))
+        y_stepwise = [y_top, y_top_small, y_bottom, y_bottom_small]
+
+    if overflow_bottom:
+        y_top = list(range(start_y, rows_big))
+        y_top_length = len(y_top)
+        y_bottom_length = rows_small - y_top_length
+        y_bottom_start = 0
+        y_bottom_end = y_bottom_start + y_bottom_length - 1
+        y_bottom = list(range(y_bottom_start, y_bottom_end + 1))
+        y_bottom_small = list(range(0, y_bottom_length))
+        y_top_small = list(range(y_bottom_length, rows_small))
+        y_stepwise = [y_top, y_top_small, y_bottom, y_bottom_small]
+
+    # Use the stepwise range to assign the value
+    if overflow_x and not overflow_y:
+        if added_flag:
+            big_matrix[np.ix_(y_range, x_stepwise[0])] += small_matrix[
+                :, x_stepwise[1]
+            ]
+            big_matrix[np.ix_(y_range, x_stepwise[2])] += small_matrix[
+                :, x_stepwise[3]
+            ]
+        x_added_indices.extend(x_stepwise[0])
+        x_added_indices.extend(x_stepwise[2])
+        y_added_indices.extend(y_range)
+
+    if not overflow_x and overflow_y:
+        if added_flag:
+            big_matrix[np.ix_(y_stepwise[0], x_range)] += small_matrix[
+                y_stepwise[1], :
+            ]
+            big_matrix[np.ix_(y_stepwise[2], x_range)] += small_matrix[
+                y_stepwise[3], :
+            ]
+        x_added_indices.extend(x_range)
+        y_added_indices.extend(y_stepwise[0])
+        y_added_indices.extend(y_stepwise[2])
+
+    if overflow_x and overflow_y:
+        if added_flag:
+            big_matrix[np.ix_(y_stepwise[0], x_stepwise[0])] += small_matrix[
+                np.ix_(y_stepwise[1], x_stepwise[1])
+            ]
+            big_matrix[np.ix_(y_stepwise[2], x_stepwise[0])] += small_matrix[
+                np.ix_(y_stepwise[3], x_stepwise[1])
+            ]
+            big_matrix[np.ix_(y_stepwise[0], x_stepwise[2])] += small_matrix[
+                np.ix_(y_stepwise[1], x_stepwise[3])
+            ]
+            big_matrix[np.ix_(y_stepwise[2], x_stepwise[2])] += small_matrix[
+                np.ix_(y_stepwise[3], x_stepwise[3])
+            ]
+        x_added_indices.extend(x_stepwise[0])
+        x_added_indices.extend(x_stepwise[2])
+        y_added_indices.extend(y_stepwise[0])
+        y_added_indices.extend(y_stepwise[2])
+
+    return big_matrix, x_added_indices, y_added_indices
+
+
+if __name__ == "__main__":
+    pass
