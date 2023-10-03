@@ -1,4 +1,7 @@
-import matplotlib.pyplot as plt
+"""
+This module provides functions for working with images.
+"""
+
 import numpy as np
 
 
