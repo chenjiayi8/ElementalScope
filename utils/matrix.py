@@ -57,3 +57,18 @@ def indexing_for_add_neighbor_mass_periodically_2d(solid):
 
     return neighbor_mass_index
 
+
+def add_neighbor_mass_2d(solid, neighbor_mass_index=None):
+    """
+    This function uses the neighbor_mass_index to add up neighboring mass.
+    """
+    if neighbor_mass_index is None:
+        neighbor_mass_index = indexing_for_add_neighbor_mass_periodically_2d(
+            solid
+        )
+
+    # Use advanced indexing to get the neighboring mass
+    neighbor_mass = np.sum(solid.ravel()[neighbor_mass_index], axis=0)
+
+    return neighbor_mass
+
