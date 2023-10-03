@@ -1,3 +1,9 @@
+"""
+This module provides functions for working with matrices.
+
+The module relies on the NumPy library to represent matrices as ndarrays.
+
+"""
 import numpy as np
 
 
