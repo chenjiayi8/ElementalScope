@@ -31,3 +31,29 @@ def is_member(matrix_a, matrix_b):
 
     return member.reshape(matrix_a.shape), index
 
+
+def indexing_for_add_neighbor_mass_periodically_2d(solid):
+    """
+    This function finds the index for adding neighbor mass periodically.
+    """
+    ex = np.array([0, 1, 0, -1, 0, 1, -1, -1, 1])  # x of discrete velocities
+    ey = np.array([0, 0, 1, 0, -1, 1, 1, -1, -1])  # y of discrete velocities
+
+    rows, cols = solid.shape
+    solid_in = np.zeros((rows, cols))
+    solid_out = np.zeros((rows, cols))
+    counter = 1  # counter for unique index
+    neighbor_mass_index = np.zeros((8, rows, cols), dtype=int)
+
+    for i in range(rows):
+        for j in range(cols):
+            solid_in[i, j] = counter
+            counter += 1
+
+    for i in range(1, 9):
+        solid_out = np.roll(solid_in, shift=(ey[i], ex[i]), axis=(0, 1))
+        _, temp_index = is_member(solid_out, solid_in)
+        neighbor_mass_index[i - 1, :, :] = temp_index
+
+    return neighbor_mass_index
+
