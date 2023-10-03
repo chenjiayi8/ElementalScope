@@ -215,5 +215,32 @@ def add_small_to_big_matrix_2d_periodically(
     return big_matrix, x_added_indices, y_added_indices
 
 
+def remove_noise_data(input_data, conn=4, times=1):
+    """
+    This function removes the noise data from the input data.
+
+    Args:
+    - input_data: A 2D numpy array of input data.
+    - conn: An integer representing the connectivity of the neighboring pixels. Default is 4.
+    - times: An integer representing the number of times to remove the noise data. Default is 1.
+
+    Returns:
+    - cleaned_data: A 2D numpy array of cleaned data.
+    """
+    if conn not in [4, 6, 8]:
+        raise ValueError(
+            "Invalid connectivity value. It should be between 4, 6, or 8."
+        )
+
+    idx = add_neighbor_mass_2d(input_data > 0, conn)
+    idx[idx < conn] = 0
+    cleaned_data = input_data.copy()
+    cleaned_data[idx == 0] = 0
+    times = times - 1
+    if times > 0:
+        cleaned_data = remove_noise_data(cleaned_data, conn, times)
+    return cleaned_data
+
+
 if __name__ == "__main__":
     pass
