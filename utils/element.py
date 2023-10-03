@@ -12,3 +12,18 @@ def data_read(file_path):
     else:
         temp_data = pd.read_excel(file_path, skiprows=5).to_numpy()
     return temp_data
+
+
+def obtain_resolution(file_path):
+    with open(file_path, "r", encoding="utf-8") as file:
+        for _ in range(4):
+            temp_text = file.readline()
+        if "um" in temp_text:
+            resolution = float(temp_text.split("Size,")[1].split("um")[0])
+        else:
+            resolution = (
+                float(temp_text.split("Size,")[1].split("nm")[0]) / 1000
+            )  # Convert nm to um
+    return resolution
+
+
