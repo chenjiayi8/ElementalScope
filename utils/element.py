@@ -63,11 +63,9 @@ def read_element_data(folder_full_path):
     )
 
 
-def data_read(file_path):
-    if os.name == "posix":
-        temp_data = pd.read_csv(file_path, skiprows=5).to_numpy()
-    else:
-        temp_data = pd.read_excel(file_path, skiprows=5).to_numpy()
+def read_element_csv(file_path):
+    """Read element data from a csv file."""
+    temp_data = pd.read_csv(file_path, skiprows=5, header=None).to_numpy()
     return temp_data
 
 
