@@ -229,3 +229,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.pushButton_stitch.setEnabled(True)
             self.pushButton_stitch.setText("Stitch")
 
+    def on_element_data_written(self, task_name):
+        """Callback when the element data is written."""
+        self.hint(f"{task_name} Element data written!")
+        self._element_writer = None
+        if self._hdf5_writer is None:
+            self.pushButton_stitch.setEnabled(True)
+            self.pushButton_stitch.setText("Stitch")
+
