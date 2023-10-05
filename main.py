@@ -404,3 +404,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.hint(f"Comparing done! (dx, dy) = ({self._add_x}, {self._add_y})")
         self.plot_diff()
 
+    @debounce(1)
+    def plot_diff(self):
+        """Plot the difference image."""
+        rows, cols = self._comparison_image.shape[:2]
+        margin = 0.05
+        boundary = self.get_boundary(self._comparison_image, 0)
+        boundary[0] = max([0, round(boundary[0] - cols * margin)])
+        boundary[1] = min([cols - 1, round(boundary[1] + cols * margin)])
+        boundary[2] = max([0, round(boundary[2] - rows * margin)])
+        boundary[3] = min([rows - 1, round(boundary[3] + rows * margin)])
+        zoom_percent = self.horizontalSlider_zoom.value() / 100
+        offset = round((boundary[1] - boundary[0]) * 0.5 * zoom_percent)
+        boundary[0] += offset
+        boundary[1] -= offset
+        self.axis.imshow(self._comparison_image)
+        self.axis.axis("off")
+        self.axis.set_xlim([boundary[0], boundary[1]])
+        self.axis.set_ylim([boundary[2], boundary[3]])
+        self.canvas.draw()
+
