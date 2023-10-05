@@ -84,6 +84,21 @@ def obtain_resolution(file_path):
     return resolution
 
 
+def write_atom_data(task_path, task_name, element, resolution, final_out):
+    """Write atom data to a csv file."""
+    file_name = f"{task_name} atom__{element} K.csv"
+    file_path = os.path.join(task_path, file_name)
+
+    headers = ["Image Name", f"{element} K"]
+    rows, cols = final_out.shape
+    metadata = [
+        ["Number X Pixels", str(cols)],
+        ["Number Y Pixels", str(rows)],
+        ["Pixel Size", f"{resolution:.6f} um"],
+        ["Data Type", "AT% x 100"],
+    ]
+    write_element_data(file_path, headers, metadata, final_out)
+
 
 def write_element_data(file_path, headers, metadata, data):
     """Write data to a csv file."""
