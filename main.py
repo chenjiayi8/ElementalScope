@@ -165,3 +165,28 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.comboBox_task.addItems(self._tasks.keys())
         self.comboBox_task.addItem("New")
 
+
+    def load_data(self):
+        """Load the data from the folders."""
+        self._data_container.clear()
+        folder_names = list(self._folders.keys())
+
+        for folder_name in folder_names:
+            # self.hint(f"Loading from folder: {folder_name}", 3)
+            folder_path = os.path.join(self._root, self._folders[folder_name])
+            result_path = os.path.join(folder_path, f"{folder_name}.h5")
+            if os.path.exists(result_path):
+                # self.hint(f"Loading from folder: {folder_name}")
+                data_loader = HDF5Loader()
+                data_loader.set_task(folder_name, result_path)
+                data_loader.data_loaded.connect(self.on_hdf5_data_loaded)
+                self._data_loaders[folder_name] = data_loader
+                self._data_loaders[folder_name].start()
+
+            else:
+                data_loader = ElementLoader()
+                data_loader.set_task(folder_name, folder_path)
+                data_loader.data_loaded.connect(self.on_element_data_loaded)
+                self._data_loaders[folder_name] = data_loader
+                self._data_loaders[folder_name].start()
+
