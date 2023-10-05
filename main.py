@@ -56,6 +56,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self._add_y = None
         self._comparison_image = None  # compared image
         self._resolution = None  # resolution
+        self.connect_callbacks()
+        self.placeholder()
+
+    def get_root(self):
+        """Get the root folder."""
+        return self._root
+
+    def connect_callbacks(self):
+        """Connect the callbacks"""
+        self.connect_control_panel()
+        self.connect_move_buttons()
+
     def connect_control_panel(self):
         """Connect the callbacks for the control panel."""
         self.pushButton_choose_folder.clicked.connect(self.choose_folder)
