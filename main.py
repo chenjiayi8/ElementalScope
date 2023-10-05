@@ -119,6 +119,40 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.read_outputs()
         self.load_data()
 
+    def placeholder(self):
+        """Show a placeholder image."""
+        # Create a Matplotlib figure and a plot
+        self.figure, self.axis = plt.subplots()
+        self.canvas = FigureCanvas(self.figure)
+
+        # Create two images with circles
+        size = (256, 256)
+        circle_a = np.zeros(size)
+        circle_b = np.zeros(size)
+
+        # Circle in the center for A
+        row_indices, col_indices = disk(
+            (size[0] // 2, size[1] // 2), radius=50
+        )
+        circle_a[row_indices, col_indices] = 1
+
+        # Circle in the top-left for B
+        row_indices, col_indices = disk(
+            (size[0] // 4, size[1] // 4), radius=50
+        )
+        circle_b[row_indices, col_indices] = 1
+
+        # Use imshowpair with the falsecolor method
+        output = imshowpair(circle_a, circle_b, method="falsecolor")
+        self.axis.imshow(output)
+        self.axis.axis("off")
+        self.figure.tight_layout()
+        self.canvas.draw()
+
+        # Embed the Matplotlib canvas inside the mainwidget
+        layout = QVBoxLayout(self.mainwidget)
+        layout.addWidget(self.canvas)
+
     def read_subfolders(self, parent):
         """Read the subfolders in the parent folder."""
         # List all entries in the parent directory
