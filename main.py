@@ -326,3 +326,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self._add_y -= round(rows * 1.5)
         return right_out
 
+    def get_comparable_data(self, field):
+        """Get the comparable data for the two images."""
+        left_data = self.get_left_data(field)
+        right_data = self.get_right_data(field)
+        rows, cols = left_data.shape
+        left_out = self.precondition_left(left_data.copy(), rows, cols)
+        right_out = self.precondition_right(right_data.copy(), rows, cols)
+        return left_out, right_out
+
