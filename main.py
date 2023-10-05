@@ -190,3 +190,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 self._data_loaders[folder_name] = data_loader
                 self._data_loaders[folder_name].start()
 
+    def on_hdf5_data_loaded(self, data_tuple):
+        """Callback when the hdf5 data is loaded."""
+        task_name, data = data_tuple
+        # self.hint(f"Folder {task_name} loaded!")
+        self._data_container[task_name] = data
+        self._loaded_folders += 1
+        if self._loaded_folders == len(self._folders):
+            self.on_all_data_loaded()
+
