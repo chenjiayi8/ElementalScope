@@ -86,6 +86,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.comboBox_task.currentTextChanged.connect(self.restore_task)
 
     def connect_move_buttons(self):
+        """Connect the callbacks for the move buttons."""
         self.pushButton_x_m.clicked.connect(partial(self.move_x, -1))
         self.pushButton_x_p.clicked.connect(partial(self.move_x, 1))
         self.pushButton_x_mm.clicked.connect(partial(self.move_x, -10))
@@ -97,14 +98,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     def move_x(self, value):
         """Move the x direction."""
-        dx = int(self.lineEdit_dx.text()) + value
-        self.lineEdit_dx.setText(str(dx))
+        d_x = int(self.lineEdit_dx.text()) + value
+        self.lineEdit_dx.setText(str(d_x))
         self.compare()
 
     def move_y(self, value):
         """Move the y direction."""
-        dy = int(self.lineEdit_dy.text()) + value
-        self.lineEdit_dy.setText(str(dy))
+        d_y = int(self.lineEdit_dy.text()) + value
+        self.lineEdit_dy.setText(str(d_y))
         self.compare()
 
     def hint(self, message, timeout=0.5):
