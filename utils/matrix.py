@@ -232,7 +232,7 @@ def remove_noise_data(input_data, conn=4, times=1):
             "Invalid connectivity value. It should be between 4, 6, or 8."
         )
 
-    idx = add_neighbor_mass_2d(input_data > 0, conn)
+    idx = add_neighbor_mass_2d(input_data > 0)
     idx[idx < conn] = 0
     cleaned_data = input_data.copy()
     cleaned_data[idx == 0] = 0
