@@ -455,3 +455,54 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self._tasks[task_name] = result
         return 0
 
+    def stitch(self):
+        """Stitch the two images."""
+        exit_code = self.save()
+        if exit_code != 0:
+            return
+        self.pushButton_stitch.setEnabled(False)
+        self.pushButton_stitch.setText("Stitching ...")
+        boundary = self.get_boundary(self._comparison_image, 0)
+        fields = [
+            self.comboBox_element.itemText(i)
+            for i in range(self.comboBox_element.count())
+        ]
+        task_name = self.get_task_name()
+        task_path = os.path.join(self._root, "Output", task_name)
+        result_data = {}
+        for field in fields:
+            left_out, right_out = self.get_comparable_data(field)
+            temp_out = left_out + right_out
+            temp_out[temp_out > left_out] = right_out[temp_out > left_out]
+            final_out = temp_out[
+                boundary[2] : boundary[3], boundary[0] : boundary[1]
+            ]
+            result_data[field] = final_out
+
+        self._data_container[task_name] = result_data
+        self.update_image_choices()
+        self.comboBox_task.setCurrentText(task_name)
+
+        self.hint("Saving hdf5 and element data ...")
+        # create hdf5 writing task
+        result_path = os.path.join(task_path, f"{task_name}.h5")
+        hdf5_writer_task = {
+            "result_path": result_path,
+            "result_data": result_data,
+            "task_name": task_name,
+        }
+        self._hdf5_writer = HDF5Writer(hdf5_writer_task)
+        self._hdf5_writer.data_written.connect(self.on_hdf5_data_written)
+        self._hdf5_writer.start()
+
+        # create element writing task
+        element_writer_task = {
+            "task_path": task_path,
+            "task_name": task_name,
+            "resolution": self._resolution,
+            "result_data": result_data,
+        }
+        self._element_writer = ElementWriter(element_writer_task)
+        self._element_writer.data_written.connect(self.on_element_data_written)
+        self._element_writer.start()
+
