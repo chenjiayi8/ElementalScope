@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
+from ElementalScope.utils.matrix import remove_noise_data
+
 
 def read_element_data(folder_full_path):
     """Read element data from a folder."""
@@ -82,3 +84,15 @@ def obtain_resolution(file_path):
     return resolution
 
 
+
+def write_element_data(file_path, headers, metadata, data):
+    """Write data to a csv file."""
+    with open(file_path, "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(headers)
+        writer.writerows(metadata)
+        writer.writerows(data)
+
+
+if __name__ == "__main__":
+    pass
