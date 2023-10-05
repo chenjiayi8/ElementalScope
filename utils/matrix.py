@@ -26,9 +26,10 @@ def is_member(matrix_a, matrix_b):
     member = np.isin(flat_a, flat_b)
 
     # Find location
-    index_flat = np.array(
-        [np.where(flat_b == a)[0][0] if a in flat_b else -1 for a in flat_a]
-    )
+    sorted_flat_b = np.sort(flat_b)
+    index_flat = np.searchsorted(sorted_flat_b, flat_a)
+    index_flat[~np.isin(flat_a, sorted_flat_b)] = -1
+    index_flat = index_flat.astype(int)
 
     index_flat[~member] = -1  # Set indices of non-members to 0
 
