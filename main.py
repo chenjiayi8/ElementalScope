@@ -156,8 +156,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             result_file = f"{folder_name}.json"
             result_path = os.path.join(output_folder, folder_name, result_file)
 
-            with open(result_path, mode="r", encoding="utf-8") as f:
-                self._tasks[folder_name] = json.load(f)
+            with open(result_path, mode="r", encoding="utf-8") as file:
+                self._tasks[folder_name] = json.load(file)
 
         self.comboBox_task.clear()
         self.comboBox_task.addItems(self._tasks.keys())
