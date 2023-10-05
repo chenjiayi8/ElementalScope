@@ -119,6 +119,19 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.read_outputs()
         self.load_data()
 
+    def choose_folder(self):
+        """Choose the root folder."""
+        self._root = QFileDialog.getExistingDirectory(self, "Select Folder")
+        if not self._root:
+            return
+
+        _, folder_name = os.path.split(self._root)
+
+        self.hint(f"Loading data from: {folder_name}")
+        self.pushButton_choose_folder.setEnabled(False)
+        self.pushButton_choose_folder.setText("Loading ...")
+        self.initialise()
+
     def placeholder(self):
         """Show a placeholder image."""
         # Create a Matplotlib figure and a plot
