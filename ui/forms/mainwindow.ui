@@ -10,12 +10,17 @@
     <height>705</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Element Scope</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../resources/icons/main.svg</normaloff>../resources/icons/main.svg</iconset>
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/icons/icons/main.svg</normaloff>:/icons/icons/main.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2" rowstretch="8,1,1" columnstretch="1,1,8">
@@ -114,195 +119,11 @@
      </layout>
     </item>
     <item row="0" column="0" rowspan="3">
-     <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,1,1,1,1,1,1,1,1,5,1" columnstretch="1,1,1">
-      <item row="9" column="2">
-       <widget class="QPushButton" name="pushButton_compare">
-        <property name="text">
-         <string>Compare</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QComboBox" name="comboBox_task">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <item>
-         <property name="text">
-          <string>Option 1</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Option 2</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Option 3</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="5" column="1" colspan="2">
-       <widget class="QSlider" name="horizontalSlider_x">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="value">
-         <number>50</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_left">
-        <property name="text">
-         <string>Left</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="2">
-       <widget class="QComboBox" name="comboBox_element">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <item>
-         <property name="text">
-          <string>Option 1</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Option 2</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Option 3</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="11" column="0">
-       <widget class="QCheckBox" name="checkBox_transpose">
-        <property name="text">
-         <string>Transpose</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="1">
-       <widget class="QPushButton" name="pushButton_reset">
-        <property name="text">
-         <string>Reset</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_x_slider">
-        <property name="text">
-         <string>X</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
+     <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,1,1,1,1,1,1,1,1,1,4,1" columnstretch="1,1,1">
+      <item row="9" column="0">
        <widget class="QLabel" name="label_dy">
         <property name="text">
          <string>dy</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QComboBox" name="comboBox_left">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <item>
-         <property name="text">
-          <string>Option 1</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Option 2</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Option 3</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_element">
-        <property name="text">
-         <string>Element</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="2">
-       <widget class="QPushButton" name="pushButton_exit">
-        <property name="text">
-         <string>Exit</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_task">
-        <property name="text">
-         <string>Task</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_right">
-        <property name="text">
-         <string>Right</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_dx">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>dx</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QPushButton" name="pushButton_stitich">
-        <property name="text">
-         <string>Stitich</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_horizontalSlider_y">
-        <property name="text">
-         <string>Y</string>
         </property>
        </widget>
       </item>
@@ -331,15 +152,57 @@
         </item>
        </widget>
       </item>
-      <item row="9" column="1">
-       <widget class="QPushButton" name="pushButton_save">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_task">
         <property name="text">
-         <string>Save</string>
+         <string>Task</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1" colspan="2">
-       <widget class="QSlider" name="horizontalSlider_y">
+      <item row="4" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_element">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <item>
+         <property name="text">
+          <string>Option 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Option 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Option 3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="8" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_dx">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="2">
+       <widget class="QPushButton" name="pushButton_exit">
+        <property name="text">
+         <string>Exit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="2">
+       <widget class="QSlider" name="horizontalSlider_x">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -370,7 +233,21 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="10" column="0">
+       <widget class="QPushButton" name="pushButton_stitch">
+        <property name="text">
+         <string>Stitch</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_left">
+        <property name="text">
+         <string>Left</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -383,17 +260,49 @@
         </property>
        </spacer>
       </item>
-      <item row="7" column="1" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_dx">
+      <item row="12" column="1">
+       <widget class="QPushButton" name="pushButton_reset">
         <property name="text">
-         <string>0</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <string>Reset</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1" colspan="2">
+      <item row="12" column="0">
+       <widget class="QCheckBox" name="checkBox_transpose">
+        <property name="text">
+         <string>Transpose</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_element">
+        <property name="text">
+         <string>Element</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QPushButton" name="pushButton_compare">
+        <property name="text">
+         <string>Compare</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QPushButton" name="pushButton_save">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_y_slider">
+        <property name="text">
+         <string>Y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1" colspan="2">
        <widget class="QLineEdit" name="lineEdit_dy">
         <property name="text">
          <string>0</string>
@@ -403,11 +312,129 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_x_slider">
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_right">
+        <property name="text">
+         <string>Right</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_dx">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>dx</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" colspan="2">
+       <widget class="QSlider" name="horizontalSlider_y">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_task">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <item>
+         <property name="text">
+          <string>Option 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Option 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Option 3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QComboBox" name="comboBox_left">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <item>
+         <property name="text">
+          <string>Option 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Option 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Option 3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_zoom_slider">
+        <property name="text">
+         <string>Zoom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1" colspan="2">
+       <widget class="QSlider" name="horizontalSlider_zoom">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
