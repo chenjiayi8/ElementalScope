@@ -517,3 +517,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         right_name = right_name.replace(common, "")
         return f"{common}{left_name}_{right_name}"
 
+    def restore_task(self):
+        """This method restores the selected task from the task list."""
+        task_name = self.comboBox_task.currentText()
+        if task_name == "New" or task_name not in self._tasks:
+            return
+        task = self._tasks[task_name]
+        self.comboBox_element.setCurrentText(task["element"])
+        self.comboBox_left.setCurrentText(task["left"])
+        self.comboBox_right.setCurrentText(task["right"])
+        self.lineEdit_dx.setText(str(task["addX"]))
+        self.lineEdit_dy.setText(str(task["addY"]))
+        self.checkBox_transpose.setChecked(task["transpose"])
+
