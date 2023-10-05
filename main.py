@@ -524,6 +524,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             final_out = temp_out[
                 boundary[2] : boundary[3], boundary[0] : boundary[1]
             ]
+            if self.checkBox_transpose.isChecked():
+                final_out = final_out.T
             result_data[field] = final_out
 
         self._data_container[task_name] = result_data
