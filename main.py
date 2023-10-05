@@ -106,3 +106,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit_dy.setText(str(dy))
         self.compare()
 
+    def hint(self, message):
+        """Show the message in the hint box."""
+        time_prefix = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S.%f")
+        time_prefix = time_prefix[:-3] + "$ "
+        message = time_prefix + message
+        self.textBrowser_hint.append(message)
+
