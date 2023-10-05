@@ -277,3 +277,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.left_or_right_changed()
 
+    def left_or_right_changed(self):
+        """Callback when the left or right image is changed."""
+        task_name = self.get_task_name()
+        if self.comboBox_task.currentText() != task_name:
+            if task_name in self._tasks:
+                self.comboBox_task.setCurrentText(task_name)
+            else:
+                self.comboBox_task.setCurrentText("New")
+
