@@ -286,3 +286,17 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             else:
                 self.comboBox_task.setCurrentText("New")
 
+    def get_left_data(self, field):
+        """Get the left data."""
+        left_cont = self._data_container[self.comboBox_left.currentText()]
+        if self.checkBox_transpose.isChecked():
+            return left_cont[field].T
+        return left_cont[field]
+
+    def get_right_data(self, field):
+        """Get the right data."""
+        right_cont = self._data_container[self.comboBox_right.currentText()]
+        if self.checkBox_transpose.isChecked():
+            return right_cont[field].T
+        return right_cont[field]
+
