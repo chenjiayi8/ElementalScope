@@ -391,3 +391,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         return idx1, idx2
 
+    def compare(self):
+        """Compare the two images."""
+        self.hint("Comparing ...")
+        field = self.comboBox_element.currentText()
+        left_out, right_out = self.get_comparable_data(field)
+        self._comparison_image = imshowpair(
+            left_out / left_out.max(),
+            right_out / right_out.max(),
+            method="falsecolor",
+        )
+        self.hint(f"Comparing done! (dx, dy) = ({self._add_x}, {self._add_y})")
+        self.plot_diff()
+
