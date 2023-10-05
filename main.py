@@ -5,7 +5,6 @@ Main file for the application.
 import json
 import os
 import sys
-import time
 from datetime import datetime
 from functools import partial
 
@@ -24,9 +23,8 @@ from ElementalScope.io.data_tools import (
     HDF5Loader,
     HDF5Writer,
 )
-from ElementalScope.io.hdf5_tools import write_h5py_all_dataset
 
-# # pylint: disable=unused-import
+# pylint: disable=unused-import
 from ElementalScope.ui.generated import resources_rc
 from ElementalScope.ui.generated.mainwindow_ui import Ui_MainWindow
 from ElementalScope.utils.debounce import debounce
