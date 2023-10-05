@@ -586,3 +586,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit_dy.setText("0")
 
 
+def main():
+    """Main function."""
+    app = QApplication(sys.argv)
+    window = MyMainWindow()
+    window.showMaximized()
+    sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
