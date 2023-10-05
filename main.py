@@ -84,3 +84,26 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         )
         self.comboBox_task.currentTextChanged.connect(self.restore_task)
 
+    def connect_move_buttons(self):
+        """Connect the callbacks for the move buttons."""
+        self.pushButton_x_m.clicked.connect(partial(self.move_x, -1))
+        self.pushButton_x_p.clicked.connect(partial(self.move_x, 1))
+        self.pushButton_x_mm.clicked.connect(partial(self.move_x, -10))
+        self.pushButton_x_pp.clicked.connect(partial(self.move_x, 10))
+        self.pushButton_y_m.clicked.connect(partial(self.move_y, -1))
+        self.pushButton_y_p.clicked.connect(partial(self.move_y, 1))
+        self.pushButton_y_mm.clicked.connect(partial(self.move_y, -10))
+        self.pushButton_y_pp.clicked.connect(partial(self.move_y, 10))
+
+    def move_x(self, value):
+        """Move the image in the x direction."""
+        dx = int(self.lineEdit_dx.text()) + value
+        self.lineEdit_dx.setText(str(dx))
+        self.compare()
+
+    def move_y(self, value):
+        """Move the image in the y direction."""
+        dy = int(self.lineEdit_dy.text()) + value
+        self.lineEdit_dy.setText(str(dy))
+        self.compare()
+
