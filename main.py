@@ -94,14 +94,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     def move_x(self, value):
         """Move the image in the x direction."""
-        dx = int(self.lineEdit_dx.text()) + value
-        self.lineEdit_dx.setText(str(dx))
+        d_x = int(self.lineEdit_dx.text()) + value
+        self.lineEdit_dx.setText(str(d_x))
         self.compare()
 
     def move_y(self, value):
         """Move the image in the y direction."""
-        dy = int(self.lineEdit_dy.text()) + value
-        self.lineEdit_dy.setText(str(dy))
+        d_y = int(self.lineEdit_dy.text()) + value
+        self.lineEdit_dy.setText(str(d_y))
         self.compare()
 
     def hint(self, message):
