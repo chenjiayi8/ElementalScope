@@ -300,3 +300,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             return right_cont[field].T
         return right_cont[field]
 
+    def precondition_left(self, left_data, rows, cols):
+        """Precondition the left data and return the left data with the offset."""
+        mask = np.zeros((rows * 3, cols * 3))
+        core_x = round(cols * 3 / 2)
+        core_y = round(rows * 3 / 2)
+        left_out, _, _ = add_small_to_big_matrix_2d_periodically(
+            mask, left_data, core_x, core_y
+        )
+        return left_out
+
