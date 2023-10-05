@@ -65,3 +65,45 @@ class ElementLoader(QThread):
         self.data_loaded.emit((self.folder_name, data_container))
 
 
+class HDF5Writer(QThread):
+    """This class writes the data to the HDF5 file."""
+
+    data_written = pyqtSignal(str)
+
+    def __init__(self, writer_task):
+        super().__init__()
+        self.writer_task = writer_task
+
+    def run(self):
+        """Run the thread."""
+        if not self.writer_task:
+            return
+        result_path = self.writer_task["result_path"]
+        data_container = self.writer_task["result_data"]
+        write_h5py_all_dataset(result_path, data_container)
+        self.data_written.emit(self.writer_task["task_name"])
+
+
+class ElementWriter(QThread):
+    """This class writes the data to the element csv file."""
+
+    data_written = pyqtSignal(str)
+
+    def __init__(self, writer_task):
+        super().__init__()
+        self.writer_task = writer_task
+
+    def run(self):
+        """Run the thread."""
+        if not self.writer_task:
+            return
+
+        for field, value in self.writer_task["result_data"].items():
+            write_atom_data(
+                self.writer_task["task_path"],
+                self.writer_task["task_name"],
+                field,
+                self.writer_task["resolution"],
+                value,
+            )
+        self.data_written.emit(self.writer_task["task_name"])
