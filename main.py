@@ -424,3 +424,34 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.axis.set_ylim([boundary[2], boundary[3]])
         self.canvas.draw()
 
+    def save(self):
+        """Save the offset and the transpose flag
+        to the result file."""
+        task_name = self.get_task_name()
+        if task_name is None:
+            self.hint("Error: The two images are the same!")
+            return -1
+        task_path = os.path.join(self._root, "Output", task_name)
+        if not os.path.exists(task_path):
+            os.makedirs(task_path)
+        result_path = os.path.join(task_path, f"{task_name}.json")
+
+        result = {
+            "name": task_name,
+            "element": self.comboBox_element.currentText(),
+            "left": self.comboBox_left.currentText(),
+            "right": self.comboBox_right.currentText(),
+            "addX": self._add_x,
+            "addY": self._add_y,
+            "transpose": self.checkBox_transpose.isChecked(),
+        }
+        with open(result_path, mode="w", encoding="utf-8") as file:
+            file.write(json.dumps(result, indent=4))
+        self.hint(f"Saved to {result_path}")
+        if task_name not in self._tasks:
+            self.comboBox_task.addItem(task_name)
+            self.comboBox_task.setCurrentText(task_name)
+
+        self._tasks[task_name] = result
+        return 0
+
