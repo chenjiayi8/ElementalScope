@@ -577,3 +577,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit_dy.setText(str(task["addY"]))
         self.checkBox_transpose.setChecked(task["transpose"])
 
+    def reset(self):
+        """Reset the task."""
+        self.horizontalSlider_x.setValue(50)
+        self.horizontalSlider_y.setValue(50)
+        self.horizontalSlider_zoom.setValue(0)
+        self.lineEdit_dx.setText("0")
+        self.lineEdit_dy.setText("0")
+
+
