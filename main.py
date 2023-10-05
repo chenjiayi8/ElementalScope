@@ -237,3 +237,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.pushButton_stitch.setEnabled(True)
             self.pushButton_stitch.setText("Stitch")
 
+    def on_all_data_loaded(self):
+        """Callback when all the data is loaded."""
+        self.pushButton_choose_folder.setEnabled(True)
+        self.pushButton_choose_folder.setText("Choose Folder")
+        self.hint("All folders loaded!")
+        self.update_image_choices()
+        self.update_element_choices()
+        tasks = sorted(self._tasks.keys())
+        tasks = [task for task in tasks if task in self._data_container]
+        self.comboBox_task.setCurrentText(tasks[0])
+        self.restore_task()
+        self._data_loaders.clear()
+
