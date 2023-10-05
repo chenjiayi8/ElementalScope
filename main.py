@@ -310,3 +310,19 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         )
         return left_out
 
+    def precondition_right(self, right_data, rows, cols):
+        """Precondition the right data and return the right data with the offset."""
+        mask = np.zeros((rows * 3, cols * 3))
+        percent_x = self.horizontalSlider_x.value() / 100
+        percent_y = self.horizontalSlider_y.value() / 100
+        d_x = int(self.lineEdit_dx.text())
+        d_y = int(self.lineEdit_dy.text())
+        self._add_x = round(cols * 3 * percent_x + d_x)
+        self._add_y = round(rows * 3 * percent_y + d_y)
+        right_out, _, _ = add_small_to_big_matrix_2d_periodically(
+            mask, right_data, self._add_x, self._add_y
+        )
+        self._add_x -= round(cols * 1.5)
+        self._add_y -= round(rows * 1.5)
+        return right_out
+
