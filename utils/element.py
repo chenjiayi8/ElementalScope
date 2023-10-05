@@ -18,13 +18,13 @@ def read_element_data(folder_full_path):
         raise ValueError(f"Folder {folder_full_path} is empty")
 
     temp_file_path = os.path.join(folder_full_path, file_list[0])
-    total_counts = data_read(temp_file_path)
+    total_counts = read_element_csv(temp_file_path)
     resolution = obtain_resolution(temp_file_path)
 
     element_data_container = {}
     for file in file_list[1:]:
         temp_file_path = os.path.join(folder_full_path, file)
-        temp_data = data_read(temp_file_path)
+        temp_data = read_element_csv(temp_file_path)
 
         total_counts += temp_data
         temp_element_name = file.split("_")[-1].split(".")[0].split(" ")[0]
