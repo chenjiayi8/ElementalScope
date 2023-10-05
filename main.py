@@ -121,3 +121,25 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.read_outputs()
         self.load_data()
 
+    def read_subfolders(self, parent):
+        """Read the subfolders in the parent folder."""
+        # List all entries in the parent directory
+        entries = os.listdir(parent)
+
+        # Filter out non-directory entries
+        subfolders = [
+            entry
+            for entry in entries
+            if os.path.isdir(os.path.join(parent, entry))
+        ]
+
+        for folder_name in subfolders:
+            if folder_name == "Output":
+                continue
+
+            if folder_name not in self._folders:
+                full_path = os.path.join(parent, folder_name)
+                relative_path = os.path.relpath(full_path, self._root)
+                self._folders[folder_name] = relative_path
+
+        return subfolders
