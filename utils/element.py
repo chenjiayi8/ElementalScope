@@ -1,3 +1,5 @@
+""" This module contains functions for reading and writing elemental data. """
+import csv
 import os
 
 import numpy as np
@@ -72,6 +74,7 @@ def read_element_csv(file_path):
 
 
 def obtain_resolution(file_path):
+    """Obtain resolution from a element csv file."""
     with open(file_path, "r", encoding="utf-8") as file:
         for _ in range(4):
             temp_text = file.readline()
