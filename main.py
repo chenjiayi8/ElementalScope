@@ -113,3 +113,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         message = time_prefix + message
         self.textBrowser_hint.append(message)
 
+    def initialise(self):
+        """Initialise the application."""
+        self._folders.clear()
+        self._loaded_folders = 0
+        self.read_inputs()
+        self.read_outputs()
+        self.load_data()
+
