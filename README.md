@@ -1,5 +1,6 @@
 # ElementalScope
-This project is a graphical user interface (GUI) application developed in Python. It is designed to analyze and visualize data from the EDX detector. The application allows users to load and manipulate data from various sources, such as HDF5 files and element csv files.
+
+ElementalScope is a graphical user interface (GUI) application developed in Python. It is designed to analyze and visualize data from the EDX detector. The application allows users to load and manipulate data from various sources, such as HDF5 files and element csv files.
 
 ## Features
 - Data Loading: The application provides functionality to load data from HDF5 files and element csv files.
@@ -15,7 +16,7 @@ This project is a graphical user interface (GUI) application developed in Python
 
 ## Usage
 
-1. Run the main file: `python main.py`
+1. Run the main file: `python -m ElementalScope.main`
 2. Use the GUI interface to load and manipulate data.
 3. Perform various tasks on the data, such as visualizing and analyzing.
 4. Save the results or export the data as needed.
