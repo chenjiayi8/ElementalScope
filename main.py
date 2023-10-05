@@ -56,3 +56,19 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self._add_y = None
         self._comparison_image = None  # compared image
         self._resolution = None  # resolution
+    def connect_control_panel(self):
+        """Connect the callbacks for the control panel."""
+        self.pushButton_choose_folder.clicked.connect(self.choose_folder)
+        self.pushButton_compare.clicked.connect(self.compare)
+        self.pushButton_save.clicked.connect(self.save)
+        self.pushButton_stitch.clicked.connect(self.stitch)
+        self.pushButton_reset.clicked.connect(self.reset)
+        self.pushButton_exit.clicked.connect(self.close)
+        self.comboBox_left.currentTextChanged.connect(
+            self.update_element_choices
+        )
+        self.comboBox_right.currentTextChanged.connect(
+            self.update_element_choices
+        )
+        self.comboBox_task.currentTextChanged.connect(self.restore_task)
+
