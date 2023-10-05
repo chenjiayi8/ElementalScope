@@ -335,3 +335,34 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         right_out = self.precondition_right(right_data.copy(), rows, cols)
         return left_out, right_out
 
+    def get_boundary(self, img, threshold_value):
+        """
+        This function finds the boundary of a binary mask of the dark border \
+        in the input image.
+
+        Args:
+        - img: A 2D or 3D numpy array of the input image.
+        - threshold_value: An integer representing the threshold value for \
+        the grayscale image.
+
+        Returns:
+        - boundary: A list of four integers representing the left, right, \
+        top, and bottom indices of the boundary.
+        """
+        if len(img.shape) == 3:
+            gray_img = rgb2gray(img)
+        elif len(img.shape) == 2:
+            gray_img = img
+        else:
+            raise ValueError("Input is not gray or rgb image")
+
+        bin_img = gray_img > threshold_value
+
+        # rows, cols = bin_img.shape
+        row_sum = np.sum(bin_img, axis=0)
+        col_sum = np.sum(bin_img, axis=1)
+        left_idx, right_idx = self.find_border(row_sum)
+        top_idx, bottom_idx = self.find_border(col_sum)
+        boundary = [left_idx, right_idx, top_idx, bottom_idx]
+        return boundary
+
