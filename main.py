@@ -143,3 +143,25 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 self._folders[folder_name] = relative_path
 
         return subfolders
+
+    def read_inputs(self):
+        """Read the input folder."""
+        self.read_subfolders(self._root)
+        os.makedirs(os.path.join(self._root, "Output"), exist_ok=True)
+
+    def read_outputs(self):
+        """Read the output folder."""
+        output_folder = os.path.join(self._root, "Output")
+        output_folders = self.read_subfolders(output_folder)
+        output_folders = sorted(output_folders)
+        for folder_name in output_folders:
+            result_file = f"{folder_name}.json"
+            result_path = os.path.join(output_folder, folder_name, result_file)
+
+            with open(result_path, mode="r", encoding="utf-8") as f:
+                self._tasks[folder_name] = json.load(f)
+
+        self.comboBox_task.clear()
+        self.comboBox_task.addItems(self._tasks.keys())
+        self.comboBox_task.addItem("New")
+
