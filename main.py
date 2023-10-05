@@ -163,7 +163,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.comboBox_task.addItems(self._tasks.keys())
         self.comboBox_task.addItem("New")
 
-
     def load_data(self):
         """Load the data from the folders."""
         self._data_container.clear()
@@ -191,8 +190,33 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def on_hdf5_data_loaded(self, data_tuple):
         """Callback when the hdf5 data is loaded."""
         task_name, data = data_tuple
-        # self.hint(f"Folder {task_name} loaded!")
         self._data_container[task_name] = data
+        self._loaded_folders += 1
+        if self._loaded_folders == len(self._folders):
+            self.on_all_data_loaded()
+
+    def on_element_data_loaded(self, data_tuple):
+        """Callback when the element data is loaded."""
+        task_name, data_container = data_tuple
+        if isinstance(data_container, ValueError):
+            self.hint(f"Error: {data_container}")
+            self._loaded_folders += 1
+            if self._loaded_folders == len(self._folders):
+                self.on_all_data_loaded()
+            return
+        self._data_container[task_name] = data_container
+        folder_path = os.path.join(self._root, self._folders[task_name])
+        result_path = os.path.join(folder_path, f"{task_name}.h5")
+        hdf5_writer_task = {
+            "result_path": result_path,
+            "result_data": data_container,
+            "task_name": task_name,
+        }
+        self.pushButton_stitch.setEnabled(False)
+        self.pushButton_stitch.setText("Writing ...")
+        self._hdf5_writer = HDF5Writer(hdf5_writer_task)
+        self._hdf5_writer.data_written.connect(self.on_hdf5_data_written)
+        self._hdf5_writer.start()
         self._loaded_folders += 1
         if self._loaded_folders == len(self._folders):
             self.on_all_data_loaded()
