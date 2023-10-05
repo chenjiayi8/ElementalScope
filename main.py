@@ -14,7 +14,6 @@ import numpy as np
 from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas,
 )
-from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QVBoxLayout
 from skimage.color import rgb2gray
 from skimage.draw import disk
