@@ -221,3 +221,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         if self._loaded_folders == len(self._folders):
             self.on_all_data_loaded()
 
+    def on_hdf5_data_written(self, task_name):
+        """Callback when the hdf5 data is written."""
+        self.hint(f"{task_name} HDF5 data written!")
+        self._hdf5_writer = None
+        if self._element_writer is None:
+            self.pushButton_stitch.setEnabled(True)
+            self.pushButton_stitch.setText("Stitch")
+
