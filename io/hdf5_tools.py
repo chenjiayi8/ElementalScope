@@ -34,3 +34,26 @@ def write_h5py_all_dataset(file_path, datasets):
                 )
 
 
+def read_h5py_dataset(path, dataset_name):
+    """Load h5py dataset."""
+    with h5py.File(path, "r") as file:
+        return file[dataset_name][:]
+
+
+def read_h5py_dataset_as_array(path, dataset_name):
+    """Load h5py dataset as array."""
+    with h5py.File(path, "r") as file:
+        return np.array(file[dataset_name][:])
+
+
+def write_h5py_dataset(path, dataset_name, data):
+    """Write h5py dataset."""
+    with h5py.File(path, "a") as file:
+        if dataset_name in file:
+            del file[dataset_name]  # Delete the old dataset if it exists
+        file.create_dataset(
+            dataset_name,
+            data=data,
+            compression="gzip",
+            compression_opts=DEFAULT_COMPRESSION_OPTS,
+        )
