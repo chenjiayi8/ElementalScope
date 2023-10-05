@@ -260,3 +260,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.comboBox_right.addItems(choices)
         self._resolution = self._data_container[choices[0]]["resolution"]
 
+    def update_element_choices(self):
+        """Update the element choices."""
+        if (self.comboBox_left.currentText() == "") or (
+            self.comboBox_right.currentText() == ""
+        ):
+            return
+        left = self._data_container[self.comboBox_left.currentText()]
+        right = self._data_container[self.comboBox_right.currentText()]
+        fields = list(set(left.keys()) & set(right.keys()))
+        fields = [field for field in fields if field != "resolution"]
+        self.comboBox_element.clear()
+        self.comboBox_element.addItems(fields)
+        if "Grey" in fields:
+            self.comboBox_element.setCurrentText("Grey")
+
+        self.left_or_right_changed()
+
