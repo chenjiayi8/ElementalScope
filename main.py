@@ -250,3 +250,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.restore_task()
         self._data_loaders.clear()
 
+    def update_image_choices(self):
+        """Update the image choices."""
+        choices = list(self._data_container.keys())
+        choices = sorted(choices)
+        self.comboBox_left.clear()
+        self.comboBox_right.clear()
+        self.comboBox_left.addItems(choices)
+        self.comboBox_right.addItems(choices)
+        self._resolution = self._data_container[choices[0]]["resolution"]
+
