@@ -35,3 +35,24 @@ from ElementalScope.utils.image import imshowpair
 from ElementalScope.utils.matrix import add_small_to_big_matrix_2d_periodically
 from ElementalScope.utils.string import get_common_prefix
 
+
+class MyMainWindow(QMainWindow, Ui_MainWindow):
+    """
+    Main window class.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self._root = None  # root folder
+        self._folders = {}  # working folders map
+        self._data_loaders = {}  # data loaders
+        self._hdf5_writer = None  # hdf5 writer
+        self._element_writer = None  # element writer
+        self._loaded_folders = None  # count of loaded folders
+        self._tasks = {}  # saved tasks
+        self._data_container = {}  # data container
+        self._add_x = None
+        self._add_y = None
+        self._comparison_image = None  # compared image
+        self._resolution = None  # resolution
