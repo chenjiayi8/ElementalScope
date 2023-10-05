@@ -366,3 +366,28 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         boundary = [left_idx, right_idx, top_idx, bottom_idx]
         return boundary
 
+    def find_border(self, sums):
+        """
+        This function finds the left or top index and the right or bottom index of the border.
+
+        Args:
+        - sums: A 1D numpy array of the row or column sums.
+
+        Returns:
+        - idx1: An integer representing the left or top index of the border.
+        - idx2: An integer representing the right or bottom index of the border.
+        """
+        idx1 = -1
+        idx2 = -1
+        for i in range(1, len(sums)):
+            if sums[i] != 0 and idx1 == -1:
+                idx1 = i - 1
+                break
+
+        for i in range(len(sums) - 1, 0, -1):
+            if sums[i] != 0 and idx2 == -1:
+                idx2 = i + 1
+                break
+
+        return idx1, idx2
+
