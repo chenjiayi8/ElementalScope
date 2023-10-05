@@ -506,3 +506,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self._element_writer.data_written.connect(self.on_element_data_written)
         self._element_writer.start()
 
+    def get_task_name(self):
+        """Get the task name from the two image names."""
+        left_name = self.comboBox_left.currentText()
+        right_name = self.comboBox_right.currentText()
+        if left_name == right_name:
+            return None
+        common = get_common_prefix(left_name, right_name)
+        left_name = left_name.replace(common, "")
+        right_name = right_name.replace(common, "")
+        return f"{common}{left_name}_{right_name}"
+
