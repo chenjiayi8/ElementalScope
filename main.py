@@ -52,6 +52,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self._loaded_folders = None  # count of loaded folders
         self._tasks = {}  # saved tasks
         self._data_container = {}  # data container
+        self.left_out = None  # left image for comparison
         self._add_x = None
         self._add_y = None
         self._comparison_image = None  # compared image
@@ -99,6 +100,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.update_element_choices
         )
         self.comboBox_task.currentTextChanged.connect(self.restore_task)
+        self.comboBox_element.currentTextChanged.connect(self.update_left_out)
 
     def connect_move_buttons(self):
         """Connect the callbacks for the move buttons."""
@@ -153,10 +155,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     def placeholder(self):
         """Show a placeholder image."""
-        # Create a Matplotlib figure and a plot
-        self.figure, self.axis = plt.subplots()
-        self.canvas = FigureCanvas(self.figure)
-
+        self.axis.clear()
         # Create two images with circles
         size = (256, 256)
         circle_a = np.zeros(size)
@@ -231,11 +230,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         folder_names = list(self._folders.keys())
 
         for folder_name in folder_names:
-            # self.hint(f"Loading from folder: {folder_name}", 3)
             folder_path = os.path.join(self._root, self._folders[folder_name])
             result_path = os.path.join(folder_path, f"{folder_name}.h5")
             if os.path.exists(result_path):
-                # self.hint(f"Loading from folder: {folder_name}")
                 data_loader = HDF5Loader()
                 data_loader.set_task(folder_name, result_path)
                 data_loader.data_loaded.connect(self.on_hdf5_data_loaded)
@@ -339,6 +336,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.left_or_right_changed()
 
+    def on_left_changed(self):
+        """Callback when the left image is changed."""
+        self.update_element_choices()
+        self.left_or_right_changed()
+        self.update_left_out()
+
+    def update_left_out(self):
+        """Update the left image for comparison."""
+        field = self.comboBox_element.currentText()
+        left_name = self.comboBox_left.currentText()
+        if field == "":
+            return
+        if left_name not in self._data_container:
+            return
+        left_data = self.get_left_data(field)
+        self.left_out = self.precondition_left(left_data.copy())
+
     def left_or_right_changed(self):
         """Callback when the left or right image is changed."""
         task_name = self.get_task_name()
@@ -362,40 +376,38 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             return right_cont[field].T
         return right_cont[field]
 
-    def precondition_left(self, left_data, rows, cols):
+    def precondition_left(self, left_data):
         """Precondition the left data and return the left data with the offset."""
+        rows, cols = left_data.shape
         mask = np.zeros((rows * 3, cols * 3))
-        core_x = round(cols * 3 / 2)
-        core_y = round(rows * 3 / 2)
+        core_x = round(cols * 1.5)
+        core_y = round(rows * 1.5)
         left_out, _, _ = add_small_to_big_matrix_2d_periodically(
             mask, left_data, core_x, core_y
         )
         return left_out
 
-    def precondition_right(self, right_data, rows, cols):
+    def precondition_right(self, right_data):
         """Precondition the right data and return the right data with the offset."""
-        mask = np.zeros((rows * 3, cols * 3))
+        mask = np.zeros(self.left_out.shape)
         percent_x = self.horizontalSlider_x.value() / 100
         percent_y = self.horizontalSlider_y.value() / 100
         d_x = int(self.lineEdit_dx.text())
         d_y = int(self.lineEdit_dy.text())
-        self._add_x = round(cols * 3 * percent_x + d_x)
-        self._add_y = round(rows * 3 * percent_y + d_y)
+        self._add_x = round(self.left_out.shape[1] * percent_x + d_x)
+        self._add_y = round(self.left_out.shape[0] * percent_y + d_y)
         right_out, _, _ = add_small_to_big_matrix_2d_periodically(
             mask, right_data, self._add_x, self._add_y
         )
-        self._add_x -= round(cols * 1.5)
-        self._add_y -= round(rows * 1.5)
+        self._add_x -= round(self.left_out.shape[1] / 2)
+        self._add_y -= round(self.left_out.shape[0] / 2)
         return right_out
 
-    def get_comparable_data(self, field):
-        """Get the comparable data for the two images."""
-        left_data = self.get_left_data(field)
+    def get_right_out(self, field):
+        """Get the right output."""
         right_data = self.get_right_data(field)
-        rows, cols = left_data.shape
-        left_out = self.precondition_left(left_data.copy(), rows, cols)
-        right_out = self.precondition_right(right_data.copy(), rows, cols)
-        return left_out, right_out
+        right_out = self.precondition_right(right_data.copy())
+        return right_out
 
     def get_boundary(self, img, threshold_value):
         """
@@ -457,9 +469,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         """Compare the two images."""
         self.hint("Comparing ...")
         field = self.comboBox_element.currentText()
-        left_out, right_out = self.get_comparable_data(field)
+        right_out = self.get_right_out(field)
         self._comparison_image = imshowpair(
-            left_out / left_out.max(),
+            self.left_out / self.left_out.max(),
             right_out / right_out.max(),
             method="falsecolor",
         )
@@ -531,9 +543,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         task_path = os.path.join(self._root, "Output", task_name)
         result_data = {}
         for field in fields:
-            left_out, right_out = self.get_comparable_data(field)
-            temp_out = left_out + right_out
-            temp_out[temp_out > left_out] = right_out[temp_out > left_out]
+            right_out = self.get_right_out(field)
+            temp_out = self.left_out + right_out
+            temp_out[temp_out > self.left_out] = right_out[
+                temp_out > self.left_out
+            ]
             final_out = temp_out[
                 boundary[2] : boundary[3], boundary[0] : boundary[1]
             ]
@@ -591,6 +605,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit_dx.setText(str(task["addX"]))
         self.lineEdit_dy.setText(str(task["addY"]))
         self.checkBox_transpose.setChecked(task["transpose"])
+        self.update_left_out()
 
     def reset(self):
         """Reset the task."""
