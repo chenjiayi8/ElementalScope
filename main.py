@@ -596,11 +596,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     def reset(self):
         """Reset the task."""
+        self.comboBox_task.setCurrentText("New")
         self.horizontalSlider_x.setValue(50)
         self.horizontalSlider_y.setValue(50)
-        self.horizontalSlider_zoom.setValue(0)
         self.lineEdit_dx.setText("0")
         self.lineEdit_dy.setText("0")
+        self.placeholder_removed = False
+        self.placeholder()
 
 
 def main():
