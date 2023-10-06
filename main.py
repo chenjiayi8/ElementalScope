@@ -13,6 +13,9 @@ import numpy as np
 from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas,
 )
+from matplotlib.backends.backend_qt5agg import (
+    NavigationToolbar2QT as NavigationToolbar,
+)
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QVBoxLayout
 from skimage.color import rgb2gray
 from skimage.draw import disk
@@ -53,8 +56,24 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self._add_y = None
         self._comparison_image = None  # compared image
         self._resolution = None  # resolution
+        self.init_ui()
         self.connect_callbacks()
         self.placeholder()
+        self.placeholder_removed = False
+
+    def init_ui(self):
+        """Initialise the user interface elements."""
+        # Create a Matplotlib figure and a plot
+        self.figure, self.axis = plt.subplots()
+        self.canvas = FigureCanvas(self.figure)
+        # Embed the Matplotlib canvas inside the mainwidget
+        plot_layout = QVBoxLayout(self.mainwidget)
+        plot_layout.addWidget(self.canvas)
+
+        # Embed the Matplotlib toolbar inside the placeholder
+        toolbar_layout = QVBoxLayout(self.placeholder_matplotlib_menu)
+        self.nav_toolbar = NavigationToolbar(self.canvas, self)
+        toolbar_layout.addWidget(self.nav_toolbar)
 
     def get_root(self):
         """Get the root folder."""
@@ -161,10 +180,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.axis.axis("off")
         self.figure.tight_layout()
         self.canvas.draw()
-
-        # Embed the Matplotlib canvas inside the mainwidget
-        layout = QVBoxLayout(self.mainwidget)
-        layout.addWidget(self.canvas)
 
     def read_subfolders(self, parent):
         """Read the subfolders in the parent folder."""
