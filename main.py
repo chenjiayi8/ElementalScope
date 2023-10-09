@@ -16,7 +16,17 @@ from matplotlib.backends.backend_qt5agg import (
 from matplotlib.backends.backend_qt5agg import (
     NavigationToolbar2QT as NavigationToolbar,
 )
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMainWindow, QVBoxLayout
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QPainter, QPixmap
+from PyQt5.QtSvg import QSvgRenderer
+from PyQt5.QtWidgets import (
+    QApplication,
+    QDesktopWidget,
+    QFileDialog,
+    QMainWindow,
+    QSplashScreen,
+    QVBoxLayout,
+)
 from skimage.color import rgb2gray
 from skimage.draw import disk
 
@@ -41,8 +51,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     Main window class.
     """
 
-    def __init__(self):
+    def __init__(self, splash):
         super().__init__()
+        self.splash = splash
         self.setupUi(self)
         self._root = None  # root folder
         self._folders = {}  # working folders map
@@ -75,6 +86,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         toolbar_layout = QVBoxLayout(self.placeholder_matplotlib_menu)
         self.nav_toolbar = NavigationToolbar(self.canvas, self)
         toolbar_layout.addWidget(self.nav_toolbar)
+
+    def show_maximized(self):
+        """Show the main window."""
+        super().showMaximized()
+        self.splash.finish(self)
 
     def get_root(self):
         """Get the root folder."""
@@ -618,11 +634,33 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.placeholder()
 
 
+def show_splash():
+    """Show the splash screen."""
+    screen = (
+        QDesktopWidget().screenGeometry()
+    )  # Get the geometry of the screen
+    width, height = screen.width(), screen.height()  # Extract width and height
+    splash_size = round(min(width, height) * 0.5)
+    # Create a pixmap from the main icon
+    renderer = QSvgRenderer(":/icons/icons/main.svg")
+    pixmap = QPixmap(splash_size, splash_size)
+    pixmap.fill(Qt.transparent)
+    painter = QPainter(pixmap)
+    renderer.render(painter)
+    painter.end()
+    # Create a splash screen from the pixmap
+    splash = QSplashScreen(pixmap)
+    splash.show()
+    return splash
+
+
 def main():
     """Main function."""
     app = QApplication(sys.argv)
-    window = MyMainWindow()
-    window.showMaximized()
+    splash = show_splash()
+    window = MyMainWindow(splash)
+    # show the main window after 3 seconds
+    QTimer.singleShot(3000, window.show_maximized)
     sys.exit(app.exec_())
 
 
